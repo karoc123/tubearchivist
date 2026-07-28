@@ -48,6 +48,9 @@ const ChannelAbout = () => {
 
   const [downloadFormat, setDownloadFormat] = useState<string | null>(null);
   const [autoDeleteAfter, setAutoDeleteAfter] = useState<number | null>(null);
+  // CUSTOM: autodelete_all_days
+  const [autoDeleteAllAfter, setAutoDeleteAllAfter] = useState<number | null>(null);
+  // END CUSTOM
   const [indexPlaylists, setIndexPlaylists] = useState(false);
   const [enableSponsorblock, setEnableSponsorblock] = useState<boolean | null>(null);
   const [pageSizeVideo, setPageSizeVideo] = useState<number | null>(null);
@@ -67,6 +70,9 @@ const ChannelAbout = () => {
         setChannelResponse(channelResponse);
         setDownloadFormat(channelResponseData?.channel_overwrites?.download_format ?? null);
         setAutoDeleteAfter(channelResponseData?.channel_overwrites?.autodelete_days ?? null);
+        // CUSTOM: autodelete_all_days
+        setAutoDeleteAllAfter(channelResponseData?.channel_overwrites?.autodelete_all_days ?? null);
+        // END CUSTOM
         setIndexPlaylists(channelResponseData?.channel_overwrites?.index_playlists ?? false);
         setEnableSponsorblock(
           channelResponseData?.channel_overwrites?.integrate_sponsorblock ?? null,
@@ -301,6 +307,23 @@ const ChannelAbout = () => {
                   updateCallback={handleUpdateConfig}
                 />
               </div>
+              {/* CUSTOM: autodelete_all_days */}
+              <div className="settings-box-wrapper">
+                <div>
+                  <p>
+                    <span className="danger-zone">Danger Zone</span>: Auto delete all videos
+                  </p>
+                </div>
+                <InputConfig
+                  type="number"
+                  name="autodelete_all_days"
+                  value={autoDeleteAllAfter}
+                  setValue={setAutoDeleteAllAfter}
+                  oldValue={channel.channel_overwrites?.autodelete_all_days ?? null}
+                  updateCallback={handleUpdateConfig}
+                />
+              </div>
+              {/* END CUSTOM */}
               <div className="settings-box-wrapper">
                 <div>
                   <p>Index playlists</p>

@@ -267,6 +267,9 @@ class YoutubeChannel(YouTubeItem):
         valid_keys = [
             "download_format",
             "autodelete_days",
+            # CUSTOM: autodelete_all_days
+            "autodelete_all_days",
+            # END CUSTOM
             "index_playlists",
             "integrate_sponsorblock",
             "subscriptions_channel_size",

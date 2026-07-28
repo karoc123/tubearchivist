@@ -280,6 +280,9 @@ class DownloadPostProcess(DownloaderBase):
         """run all functions"""
         self.auto_delete_all()
         self.auto_delete_overwrites()
+        # CUSTOM: autodelete_all_days
+        self.auto_delete_unwatched_overwrites()
+        # END CUSTOM
         self.refresh_playlist()
         self.match_videos()
         self.get_comments()
@@ -509,3 +512,25 @@ class DownloadPostProcess(DownloaderBase):
             ]
             progress = idx / total
             self.task.send_progress(message, progress=progress)
+
+    # CUSTOM: autodelete_all_days
+    def auto_delete_unwatched_overwrites(self):
+        """handle per channel auto delete for unwatched/all videos from overwrites"""
+        for channel_id, value in self.channel_overwrites.items():
+            if "autodelete_all_days" in value:
+                autodelete_all_days = value.get("autodelete_all_days")
+                if autodelete_all_days is None:
+                    continue
+
+                print(f"{channel_id}: delete all older than {autodelete_all_days}d")
+                now_lte = str(self.now - autodelete_all_days * 24 * 60 * 60)
+                must_list = [
+                    {"range": {"date_downloaded": {"lte": now_lte}}},
+                    {"term": {"channel.channel_id": {"value": channel_id}}},
+                ]
+                data = {
+                    "query": {"bool": {"must": must_list}},
+                    "sort": [{"date_downloaded": {"order": "desc"}}],
+                }
+                self._auto_delete_watched(data)
+    # END CUSTOM

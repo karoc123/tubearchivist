@@ -21,6 +21,9 @@ import { ViewStylesEnum, ViewStylesType } from '../configuration/constants/ViewS
 type ChannelOverwritesType = {
   download_format: string | null;
   autodelete_days: number | null;
+  // CUSTOM: autodelete_all_days
+  autodelete_all_days: number | null;
+  // END CUSTOM
   index_playlists: boolean | null;
   integrate_sponsorblock: boolean | null;
   subscriptions_channel_size: number | null;

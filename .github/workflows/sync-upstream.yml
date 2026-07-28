@@ -1,0 +1,38 @@
+name: Sync Upstream Master
+
+on:
+  schedule:
+    - cron: '0 4 * * *' # Runs daily at 04:00 AM UTC
+  workflow_dispatch: # Allows manual trigger in GitHub Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Custom Branch
+        uses: actions/checkout@v4
+        with:
+          ref: develop # Replace with your custom branch name (e.g. custom-autodelete) if different
+          fetch-depth: 0 # Fetch full history so git merge can find common ancestors
+
+      - name: Configure Git Author
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Add Upstream and Fetch
+        run: |
+          git remote add upstream https://github.com/tubearchivist/tubearchivist.git
+          git fetch upstream master
+
+      - name: Merge Upstream Master
+        run: |
+          echo "Merging upstream/master..."
+          git merge upstream/master --no-edit
+
+      - name: Push Back to Origin
+        run: |
+          git push origin develop # Replace with your custom branch name if different
