@@ -515,15 +515,17 @@ class DownloadPostProcess(DownloaderBase):
 
     # CUSTOM: autodelete_all_days
     def auto_delete_unwatched_overwrites(self):
-        """handle per channel auto delete for unwatched/all videos from overwrites"""
+        """Auto delete all videos from overwrites."""
         for channel_id, value in self.channel_overwrites.items():
             if "autodelete_all_days" in value:
-                autodelete_all_days = value.get("autodelete_all_days")
-                if autodelete_all_days is None:
+                days = value.get("autodelete_all_days")
+                if days is None:
                     continue
 
-                print(f"{channel_id}: delete all older than {autodelete_all_days}d")
-                now_lte = str(self.now - autodelete_all_days * 24 * 60 * 60)
+                print(
+                    f"{channel_id}: delete all older than {days}d"
+                )
+                now_lte = str(self.now - days * 24 * 60 * 60)
                 must_list = [
                     {"range": {"date_downloaded": {"lte": now_lte}}},
                     {"term": {"channel.channel_id": {"value": channel_id}}},
