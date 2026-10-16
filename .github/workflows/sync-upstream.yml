@@ -17,6 +17,7 @@ jobs:
         with:
           ref: develop # Replace with your custom branch name (e.g. custom-autodelete) if different
           fetch-depth: 0 # Fetch full history so git merge can find common ancestors
+          token: ${{ secrets.UPSTREAM_SYNC_TOKEN }}
 
       - name: Configure Git Author
         run: |
