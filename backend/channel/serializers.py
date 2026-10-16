@@ -15,7 +15,9 @@ class ChannelOverwriteSerializer(
     download_format = serializers.CharField(required=False, allow_null=True)
     autodelete_days = serializers.IntegerField(required=False, allow_null=True)
     # CUSTOM: autodelete_all_days
-    autodelete_all_days = serializers.IntegerField(required=False, allow_null=True)
+    autodelete_all_days = serializers.IntegerField(
+        required=False, allow_null=True
+    )
     # END CUSTOM
     index_playlists = serializers.BooleanField(required=False, allow_null=True)
     integrate_sponsorblock = serializers.BooleanField(

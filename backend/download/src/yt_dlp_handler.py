@@ -516,9 +516,7 @@ class DownloadPostProcess(DownloaderBase):
                 if days is None:
                     continue
 
-                print(
-                    f"{channel_id}: delete all older than {days}d"
-                )
+                print(f"{channel_id}: delete all older than {days}d")
                 now_lte = str(self.now - days * 24 * 60 * 60)
                 must_list = [
                     {"range": {"date_downloaded": {"lte": now_lte}}},
@@ -529,4 +527,5 @@ class DownloadPostProcess(DownloaderBase):
                     "sort": [{"date_downloaded": {"order": "desc"}}],
                 }
                 self._auto_delete_watched(data)
+
     # END CUSTOM
